@@ -20,3 +20,9 @@ Running log of how AI was directed on this assessment. Not polished.
 - User asked to continue M1–M5 without stopping between gates.
 - Implemented Flyway V1–V5 exactly as PRP DDL; seed UUIDs match the PRP staff ids.
 - Assumption: HK officer team is `HK-MOTOR-1` (PRP named the person, not the team). Policy ids are fixed UUIDs `5555…`–`8888…` for later tests.
+
+## 2026-08-24 — M2 persistence
+
+- Implemented JPA entities/repos mirroring V1–V5; `@DataJpaTest` + Flyway + Testcontainers.
+- Challenged PRP `@Container` on an abstract superclass: Testcontainers stopped Postgres after the first test class and later classes hit a dead Hikari pool. Overrode with a JVM-scoped container + `@DynamicPropertySource`.
+- Tests: Policy/Staff/Claim repository, ClaimConstraint, ClaimNumberSequence (11) plus contextLoads.
