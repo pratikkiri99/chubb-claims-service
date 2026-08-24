@@ -53,7 +53,7 @@ class ClaimServiceDecisionTest {
         Staff officer = ClaimFixtures.officer();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         Claim settled = claimService.settle("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, new BigDecimal("900.00"));
 
@@ -67,7 +67,7 @@ class ClaimServiceDecisionTest {
         Staff officer = ClaimFixtures.officer();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         Claim rejected = claimService.reject("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, "Not covered");
 
@@ -81,7 +81,7 @@ class ClaimServiceDecisionTest {
         Staff officer = ClaimFixtures.officer();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         assertThatThrownBy(() ->
                 claimService.settle("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, new BigDecimal("50000.01")))
@@ -93,7 +93,7 @@ class ClaimServiceDecisionTest {
         Staff officer = ClaimFixtures.officer();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         assertThatThrownBy(() -> claimService.reject("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, "  "))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -105,7 +105,7 @@ class ClaimServiceDecisionTest {
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         claim.settle(new BigDecimal("100.00"), claim.getPolicy().getSumInsured(), NOW);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         assertThatThrownBy(() ->
                 claimService.settle("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, new BigDecimal("100.00")))
@@ -118,7 +118,7 @@ class ClaimServiceDecisionTest {
         Staff other = ClaimFixtures.otherOfficer();
         Claim claim = ClaimFixtures.inProgressClaim(assignee);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OTHER_OFFICER_ID)).thenReturn(Optional.of(other));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         assertThatThrownBy(() ->
                 claimService.settle("CLM-AU-00000001", ClaimFixtures.OTHER_OFFICER_ID, new BigDecimal("100.00")))
@@ -131,7 +131,7 @@ class ClaimServiceDecisionTest {
         Staff manager = ClaimFixtures.manager();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.MANAGER_ID)).thenReturn(Optional.of(manager));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         Claim settled = claimService.settle("CLM-AU-00000001", ClaimFixtures.MANAGER_ID, new BigDecimal("100.00"));
         assertThat(settled.getStatus()).isEqualTo(ClaimStatus.SETTLED);

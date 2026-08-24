@@ -87,7 +87,7 @@ public class ClaimService {
 
     @Transactional(readOnly = true)
     public Claim getByClaimNumber(String claimNumber) {
-        return claimRepository.findByClaimNumber(claimNumber)
+        return claimRepository.findDetailedByClaimNumber(claimNumber)
                 .orElseThrow(() -> new ClaimNotFoundException(claimNumber));
     }
 

@@ -37,3 +37,9 @@ Running log of how AI was directed on this assessment. Not polished.
 
 - REST adapters, ClaimMapper, RFC 7807 GlobalExceptionHandler, OpenAPI title/version.
 - @WebMvcTest covers 201/400/401/403/404/409 and claimant JSON omitting reserveAmount.
+
+## 2026-08-24 — M5 e2e
+
+- Journey ITs with TestRestTemplate + Testcontainers; no mocked repositories.
+- Reloaded claims via EntityGraph so staff DTO mapping works with open-in-view=false.
+- Compared JSON money as Number to avoid Integer vs Double mismatch on settlementAmount.

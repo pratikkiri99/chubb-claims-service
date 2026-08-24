@@ -52,7 +52,7 @@ class ClaimServiceReserveTest {
         Staff officer = ClaimFixtures.officer();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         Claim updated = claimService.updateReserve(
                 "CLM-AU-00000001", ClaimFixtures.OFFICER_ID, new BigDecimal("750.00"));
@@ -66,7 +66,7 @@ class ClaimServiceReserveTest {
         Claim open = ClaimFixtures.openClaim();
         open.setAssignedStaff(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(open));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(open));
 
         assertThatThrownBy(() ->
                 claimService.updateReserve("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, new BigDecimal("750.00")))
@@ -78,7 +78,7 @@ class ClaimServiceReserveTest {
         Staff officer = ClaimFixtures.officer();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         assertThatThrownBy(() ->
                 claimService.updateReserve("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, new BigDecimal("-1.00")))
@@ -90,7 +90,7 @@ class ClaimServiceReserveTest {
         Staff officer = ClaimFixtures.officer();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         assertThatThrownBy(() ->
                 claimService.updateReserve("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, new BigDecimal("50000.01")))

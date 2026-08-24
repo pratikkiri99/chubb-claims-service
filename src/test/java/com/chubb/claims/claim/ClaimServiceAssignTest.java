@@ -56,7 +56,7 @@ class ClaimServiceAssignTest {
         Staff officer = ClaimFixtures.officer();
         Claim open = ClaimFixtures.openClaim();
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(open));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(open));
         when(claimRepository.assignIfOpen(eq("CLM-AU-00000001"), eq(officer),
                 eq(ClaimStatus.IN_PROGRESS), eq(ClaimStatus.OPEN), eq(NOW)))
                 .thenAnswer(invocation -> {
@@ -76,7 +76,7 @@ class ClaimServiceAssignTest {
     void alreadyInProgressIsAlreadyAssigned() {
         Staff officer = ClaimFixtures.officer();
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001"))
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001"))
                 .thenReturn(Optional.of(ClaimFixtures.inProgressClaim(officer)));
 
         assertThatThrownBy(() -> claimService.assignToSelf("CLM-AU-00000001", ClaimFixtures.OFFICER_ID))
@@ -87,7 +87,7 @@ class ClaimServiceAssignTest {
     void marketMismatchIsForbidden() {
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.HK_OFFICER_ID))
                 .thenReturn(Optional.of(ClaimFixtures.hkOfficer()));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001"))
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001"))
                 .thenReturn(Optional.of(ClaimFixtures.openClaim()));
 
         assertThatThrownBy(() -> claimService.assignToSelf("CLM-AU-00000001", ClaimFixtures.HK_OFFICER_ID))

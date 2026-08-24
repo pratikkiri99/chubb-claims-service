@@ -52,7 +52,7 @@ class ClaimServiceInformationTest {
         Staff officer = ClaimFixtures.officer();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         Claim updated = claimService.requestInformation("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, "Need photos");
 
@@ -67,7 +67,7 @@ class ClaimServiceInformationTest {
         Staff officer = ClaimFixtures.officer();
         Claim claim = ClaimFixtures.inProgressClaim(officer);
         claim.requestInformation(officer, "Need photos");
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(claim));
 
         Claim updated = claimService.provideInformation("CLM-AU-00000001", "Photos attached");
 
@@ -82,7 +82,7 @@ class ClaimServiceInformationTest {
         Claim open = ClaimFixtures.openClaim();
         open.setAssignedStaff(officer);
         when(staffRepository.findByIdAndActiveTrue(ClaimFixtures.OFFICER_ID)).thenReturn(Optional.of(officer));
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(open));
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001")).thenReturn(Optional.of(open));
 
         assertThatThrownBy(() ->
                 claimService.requestInformation("CLM-AU-00000001", ClaimFixtures.OFFICER_ID, "Need photos"))
@@ -91,7 +91,7 @@ class ClaimServiceInformationTest {
 
     @Test
     void provideInformationWhenNotPendingIsIllegal() {
-        when(claimRepository.findByClaimNumber("CLM-AU-00000001"))
+        when(claimRepository.findDetailedByClaimNumber("CLM-AU-00000001"))
                 .thenReturn(Optional.of(ClaimFixtures.openClaim()));
 
         assertThatThrownBy(() -> claimService.provideInformation("CLM-AU-00000001", "Photos"))
