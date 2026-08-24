@@ -1,0 +1,21 @@
+INSERT INTO policy (
+    id, policy_number, market, coverage_type, holder_name, sum_insured, status, created_at, updated_at
+) VALUES
+    ('55555555-5555-5555-5555-555555555555', 'POL-AU-MOTOR-001', 'AU', 'MOTOR',
+     'Alex Tan', 50000.00, 'ACTIVE', TIMESTAMPTZ '2024-01-01 00:00:00+00', TIMESTAMPTZ '2024-01-01 00:00:00+00'),
+    ('66666666-6666-6666-6666-666666666666', 'POL-AU-PROP-001', 'AU', 'PROPERTY',
+     'Jordan Lee', 250000.00, 'ACTIVE', TIMESTAMPTZ '2024-01-01 00:00:00+00', TIMESTAMPTZ '2024-01-01 00:00:00+00'),
+    ('77777777-7777-7777-7777-777777777777', 'POL-AU-MOTOR-LAPSED', 'AU', 'MOTOR',
+     'Sam Patel', 50000.00, 'LAPSED', TIMESTAMPTZ '2024-01-01 00:00:00+00', TIMESTAMPTZ '2024-01-01 00:00:00+00'),
+    ('88888888-8888-8888-8888-888888888888', 'POL-HK-MOTOR-001', 'HK', 'MOTOR',
+     'Casey Wong', 50000.00, 'ACTIVE', TIMESTAMPTZ '2024-01-01 00:00:00+00', TIMESTAMPTZ '2024-01-01 00:00:00+00');
+
+INSERT INTO staff (id, full_name, email, market, team, role, active, created_at) VALUES
+    ('11111111-1111-1111-1111-111111111111', 'Riley Chen', 'riley.chen@chubb.example',
+     'AU', 'AU-MOTOR-1', 'OFFICER', TRUE, TIMESTAMPTZ '2024-01-01 00:00:00+00'),
+    ('22222222-2222-2222-2222-222222222222', 'Morgan Singh', 'morgan.singh@chubb.example',
+     'AU', 'AU-MOTOR-1', 'OFFICER', TRUE, TIMESTAMPTZ '2024-01-01 00:00:00+00'),
+    ('33333333-3333-3333-3333-333333333333', 'Avery Brooks', 'avery.brooks@chubb.example',
+     'AU', 'AU-MGMT', 'MANAGER', TRUE, TIMESTAMPTZ '2024-01-01 00:00:00+00'),
+    ('44444444-4444-4444-4444-444444444444', 'Quinn Ho', 'quinn.ho@chubb.example',
+     'HK', 'HK-MOTOR-1', 'OFFICER', TRUE, TIMESTAMPTZ '2024-01-01 00:00:00+00');

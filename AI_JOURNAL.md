@@ -14,3 +14,9 @@ Running log of how AI was directed on this assessment. Not polished.
 - Accepted Spring Boot **3.5.16** (latest 3.5.x OSS) instead of the PRP’s example 3.5.5. Did not jump to Boot 4 even though start.spring.io now defaults to 4.1.x.
 - Overrode Initializr: hand-wrote `pom.xml` and fetched Maven Wrapper, because Initializr no longer offers 3.5.
 - Added `V0__baseline.sql` (`-- baseline`) so Flyway has a migration before M1 schema, as the PRP specified.
+
+## 2026-08-24 — M1 schema
+
+- User asked to continue M1–M5 without stopping between gates.
+- Implemented Flyway V1–V5 exactly as PRP DDL; seed UUIDs match the PRP staff ids.
+- Assumption: HK officer team is `HK-MOTOR-1` (PRP named the person, not the team). Policy ids are fixed UUIDs `5555…`–`8888…` for later tests.
