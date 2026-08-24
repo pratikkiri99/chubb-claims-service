@@ -2,6 +2,11 @@
 
 Backend for motor and property claims intake, lifecycle, workload, and outstanding liability.
 
+## Design
+
+- [Architecture](docs/architecture.md) — context, components, data model, sync vs events
+- [Flows](docs/flows.md) — state machine, sequence diagrams, HTTP map
+
 ## Prerequisites
 
 - Java 21
