@@ -12,4 +12,6 @@ public interface StaffRepository extends JpaRepository<Staff, UUID> {
     Optional<Staff> findByIdAndActiveTrue(UUID id);
 
     List<Staff> findByMarketAndTeam(Market market, String team);
+
+    List<Staff> findByMarket(Market market);
 }

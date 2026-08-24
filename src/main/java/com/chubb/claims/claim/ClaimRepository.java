@@ -2,7 +2,9 @@ package com.chubb.claims.claim;
 
 import com.chubb.claims.shared.domain.Market;
 import com.chubb.claims.staff.Staff;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -15,6 +17,29 @@ import java.util.UUID;
 public interface ClaimRepository extends JpaRepository<Claim, UUID> {
 
     Optional<Claim> findByClaimNumber(String claimNumber);
+
+    @EntityGraph(attributePaths = {"policy", "assignedStaff", "communications", "communications.staff"})
+    @Query("select c from Claim c where c.claimNumber = :claimNumber")
+    Optional<Claim> findDetailedByClaimNumber(@Param("claimNumber") String claimNumber);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("""
+            update Claim c
+               set c.assignedStaff = :staff,
+                   c.status = :inProgress,
+                   c.assignedAt = :at,
+                   c.version = c.version + 1,
+                   c.updatedAt = :at
+             where c.claimNumber = :claimNumber
+               and c.status = :open
+               and c.assignedStaff is null
+            """)
+    int assignIfOpen(
+            @Param("claimNumber") String claimNumber,
+            @Param("staff") Staff staff,
+            @Param("inProgress") ClaimStatus inProgress,
+            @Param("open") ClaimStatus open,
+            @Param("at") Instant at);
 
     List<Claim> findByMarketAndStatusAndAssignedStaffIsNullOrderByCreatedAtDesc(
             Market market, ClaimStatus status);

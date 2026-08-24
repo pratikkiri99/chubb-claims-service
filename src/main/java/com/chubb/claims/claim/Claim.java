@@ -3,6 +3,8 @@ package com.chubb.claims.claim;
 import com.chubb.claims.policy.Policy;
 import com.chubb.claims.shared.domain.CoverageType;
 import com.chubb.claims.shared.domain.Market;
+import com.chubb.claims.shared.error.IllegalClaimStateException;
+import com.chubb.claims.shared.error.ReserveLimitException;
 import com.chubb.claims.staff.Staff;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -141,6 +143,70 @@ public class Claim {
     public void addCommunication(ClaimCommunication communication) {
         communication.setClaim(this);
         communications.add(communication);
+    }
+
+    public void assign(Staff staff, Instant at) {
+        requireStatus(ClaimStatus.OPEN);
+        this.assignedStaff = staff;
+        this.assignedAt = at;
+        this.status = ClaimStatus.IN_PROGRESS;
+    }
+
+    public void requestInformation(Staff staff, String body) {
+        requireStatus(ClaimStatus.IN_PROGRESS);
+        this.status = ClaimStatus.PENDING_INFORMATION;
+        addCommunication(ClaimCommunication.staffRequest(staff, body));
+    }
+
+    public void provideInformation(String body) {
+        requireStatus(ClaimStatus.PENDING_INFORMATION);
+        this.status = ClaimStatus.IN_PROGRESS;
+        addCommunication(ClaimCommunication.claimantResponse(body));
+    }
+
+    public void updateReserve(BigDecimal reserve, BigDecimal sumInsured) {
+        requireStatus(ClaimStatus.IN_PROGRESS);
+        requireAmountWithinCover(reserve, sumInsured, true);
+        this.reserveAmount = reserve;
+    }
+
+    public void settle(BigDecimal amount, BigDecimal sumInsured, Instant at) {
+        requireStatus(ClaimStatus.IN_PROGRESS);
+        requireAmountWithinCover(amount, sumInsured, false);
+        this.status = ClaimStatus.SETTLED;
+        this.settlementAmount = amount;
+        this.rejectionReason = null;
+        this.decidedAt = at;
+    }
+
+    public void reject(String reason, Instant at) {
+        requireStatus(ClaimStatus.IN_PROGRESS);
+        if (reason == null || reason.isBlank()) {
+            throw new IllegalArgumentException("rejectionReason must not be blank");
+        }
+        this.status = ClaimStatus.REJECTED;
+        this.rejectionReason = reason;
+        this.settlementAmount = null;
+        this.decidedAt = at;
+    }
+
+    private void requireStatus(ClaimStatus expected) {
+        if (status != expected) {
+            throw new IllegalClaimStateException(
+                    "Claim %s is %s; expected %s".formatted(claimNumber, status, expected));
+        }
+    }
+
+    private static void requireAmountWithinCover(BigDecimal amount, BigDecimal sumInsured, boolean allowZero) {
+        if (amount == null) {
+            throw new ReserveLimitException("Amount is required");
+        }
+        if (allowZero ? amount.compareTo(BigDecimal.ZERO) < 0 : amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ReserveLimitException("Amount must be " + (allowZero ? ">= 0" : "> 0"));
+        }
+        if (amount.compareTo(sumInsured) > 0) {
+            throw new ReserveLimitException("Amount exceeds sum insured");
+        }
     }
 
     @PrePersist

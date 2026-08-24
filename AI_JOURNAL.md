@@ -26,3 +26,9 @@ Running log of how AI was directed on this assessment. Not polished.
 - Implemented JPA entities/repos mirroring V1–V5; `@DataJpaTest` + Flyway + Testcontainers.
 - Challenged PRP `@Container` on an abstract superclass: Testcontainers stopped Postgres after the first test class and later classes hit a dead Hikari pool. Overrode with a JVM-scoped container + `@DynamicPropertySource`.
 - Tests: Policy/Staff/Claim repository, ClaimConstraint, ClaimNumberSequence (11) plus contextLoads.
+
+## 2026-08-24 — M3 domain
+
+- Implemented ClaimService/WorkloadService/ExposureService, domain exceptions, logging event publisher, Clock bean.
+- State transitions live on the Claim aggregate; assign uses atomic `assignIfOpen`.
+- Mockito unit tests per rule plus ClaimRepositoryQueryTest for JPQL.
