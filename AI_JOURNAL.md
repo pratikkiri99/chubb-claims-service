@@ -32,3 +32,8 @@ Running log of how AI was directed on this assessment. Not polished.
 - Implemented ClaimService/WorkloadService/ExposureService, domain exceptions, logging event publisher, Clock bean.
 - State transitions live on the Claim aggregate; assign uses atomic `assignIfOpen`.
 - Mockito unit tests per rule plus ClaimRepositoryQueryTest for JPQL.
+
+## 2026-08-24 — M4 API
+
+- REST adapters, ClaimMapper, RFC 7807 GlobalExceptionHandler, OpenAPI title/version.
+- @WebMvcTest covers 201/400/401/403/404/409 and claimant JSON omitting reserveAmount.
